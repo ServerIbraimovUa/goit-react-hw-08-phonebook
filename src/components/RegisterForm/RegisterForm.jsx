@@ -6,7 +6,7 @@ import { Container } from 'components/App.styled';
 import { FormStyle } from './RegisterForm.styled';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from 'redux/auth/auth';
-import { selectError, selectIsLoggedIn } from 'redux/auth/authSelectors';
+import { selectIsLoggedIn } from 'redux/auth/authSelectors';
 import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
@@ -25,24 +25,23 @@ const RegisterForm = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
   const isLogedIn = useSelector(selectIsLoggedIn);
-  const error = useSelector(selectError);
   const [toggleInput, setToggleInput] = useState('password');
   const [toggleIcon, setToggleIcon] = useState(false);
   const dispatch = useDispatch();
 
   const onSubmit = data => {
-    dispatch(signUp(data));
-    reset();
+    dispatch(signUp(data))
+      .unwrap()
+      .catch(err => {
+        console.log(err);
+        notifyError('Please write the correct data');
+      });
   };
-  if (error) {
-    notifyError('Please write correct data !');
-  }
 
   return (
     <Container>

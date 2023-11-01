@@ -2,14 +2,17 @@ import { Container } from 'components/App.styled';
 import { Outlet } from 'react-router-dom';
 import { HeaderStyle } from './Layout.styled';
 import { useSelector } from 'react-redux';
-import { selectIsLoggedIn, selectLoading } from 'redux/auth/authSelectors';
+import {
+  selectAuthIsLoading,
+  selectAuthIsLoggedIn,
+} from 'redux/auth/authSelectors';
 import UserMenu from 'components/UserMenu/UserMenu';
 import AuthMenu from 'components/AuthMenu/AuthMenu';
 import Loading from 'components/Loading/Loading';
 
 const Layout = () => {
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const isLoading = useSelector(selectLoading);
+  const isLoggedIn = useSelector(selectAuthIsLoggedIn);
+  const isLoading = useSelector(selectAuthIsLoading);
 
   return (
     <>

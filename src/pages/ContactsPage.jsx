@@ -1,23 +1,23 @@
 import ContactForm from 'components/ContactForm/ContactForm';
 import ContactList from 'components/ContactList/ContactList';
+import { useAuth } from 'hooks/useAuth';
 import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchContacts } from 'redux/Contacts/contactsOperetions';
-import { selectIsLoggedIn } from 'redux/auth/authSelectors';
 
 const ContactsPage = () => {
   const dispatch = useDispatch();
-  const isLogedIn = useSelector(selectIsLoggedIn);
+  const isLoggedIn = useAuth();
 
   useEffect(() => {
-    if (isLogedIn) {
+    if (isLoggedIn) {
       dispatch(fetchContacts());
     }
-  }, [dispatch, isLogedIn]);
+  }, [dispatch, isLoggedIn]);
 
   return (
     <>
-      {isLogedIn && <ContactForm />}
+      <ContactForm />
       <ContactList />
     </>
   );

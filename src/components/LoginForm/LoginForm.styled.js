@@ -3,13 +3,12 @@ import styled from 'styled-components';
 export const FormStyle = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin: 1em auto;
   gap: 1em;
-  width: 400px;
+  max-width: 400px;
   label {
+    max-width: 100%;
     position: relative;
-    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.1em;
@@ -38,6 +37,7 @@ export const FormStyle = styled.form`
   }
 
   button {
+    margin: 0 auto;
     width: 50%;
     padding: 0.3em 0.3em;
     border: none;

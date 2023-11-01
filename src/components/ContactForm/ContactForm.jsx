@@ -7,11 +7,12 @@ import { addContact } from 'redux/Contacts/contactsOperetions';
 import { useForm } from 'react-hook-form';
 import { FormStyle } from './ContactForm.styled';
 import { Container } from 'components/App.styled';
+import { notifySuccess } from 'utils/notify';
 
 const schema = yup
   .object({
-    name: yup.string().min(4).max(32).required(),
-    number: yup.string().min(6).max(16).required(),
+    name: yup.string().min(4).max(16).required(),
+    number: yup.string().min(6).max(11).required(),
   })
   .required();
 
@@ -35,7 +36,9 @@ export default function ContactForm() {
       return;
     }
 
-    dispatch(addContact(data));
+    dispatch(addContact(data))
+      .unwrap()
+      .then(() => notifySuccess(`Contact "${data.name} "successfully`));
 
     reset();
   };

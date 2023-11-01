@@ -6,7 +6,7 @@ export const FormStyle = styled.form`
   align-items: center;
   margin: 1em auto;
   gap: 1em;
-  width: 400px;
+  max-width: 400px;
   label {
     width: 100%;
     display: flex;
@@ -18,6 +18,8 @@ export const FormStyle = styled.form`
   }
 
   input {
+    width: 100%;
+
     border: none;
     padding: 0.3em 0.5em;
     border-radius: 1em;

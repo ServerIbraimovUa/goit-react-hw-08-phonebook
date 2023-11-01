@@ -1,16 +1,13 @@
 import { useForm } from 'react-hook-form';
-import 'react-toastify/dist/ReactToastify.css';
 
 import { Container } from 'components/App.styled';
 import { FormStyle } from './LoginForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from 'redux/auth/auth';
-import { Navigate } from 'react-router-dom';
-import { selectIsLoggedIn } from 'redux/auth/authSelectors';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 import { useState } from 'react';
 import { toggleClick } from 'utils/togglePassword';
-import { notifyError } from 'utils/notify';
+import { notifyError, notifySuccess } from 'utils/notify';
 
 const LoginForm = () => {
   const { register, handleSubmit } = useForm();
@@ -18,20 +15,20 @@ const LoginForm = () => {
   const [toggleIcon, setToggleIcon] = useState(false);
   const dispatch = useDispatch();
 
-  const isLogedIn = useSelector(selectIsLoggedIn);
-
   const onSubmit = data => {
     dispatch(login(data))
       .unwrap()
+      .then(({ user }) =>
+        notifySuccess(`Welcome to your PhoneBook ${user.name}`)
+      )
       .catch(err => {
         console.log(err);
-        notifyError('Please write the correct data');
+        notifyError('Please write the correct Email or Password');
       });
   };
 
   return (
     <Container>
-      {isLogedIn && <Navigate to="/contacts" replace />}
       <FormStyle onSubmit={handleSubmit(onSubmit)}>
         <label>
           <span>Email</span>

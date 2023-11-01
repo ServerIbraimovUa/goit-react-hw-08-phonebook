@@ -4,14 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import { Container } from 'components/App.styled';
 import { FormStyle } from './RegisterForm.styled';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { signUp } from 'redux/auth/auth';
-import { selectIsLoggedIn } from 'redux/auth/authSelectors';
-import { Navigate } from 'react-router-dom';
 import { useState } from 'react';
 import { RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 import { toggleClick } from 'utils/togglePassword';
-import { notifyError } from 'utils/notify';
+import { notifyError, notifySuccess } from 'utils/notify';
 
 const schema = yup
   .object({
@@ -29,7 +27,7 @@ const RegisterForm = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const isLogedIn = useSelector(selectIsLoggedIn);
+
   const [toggleInput, setToggleInput] = useState('password');
   const [toggleIcon, setToggleIcon] = useState(false);
   const dispatch = useDispatch();
@@ -37,15 +35,17 @@ const RegisterForm = () => {
   const onSubmit = data => {
     dispatch(signUp(data))
       .unwrap()
+      .then(() =>
+        notifySuccess(`Account ${data.name} was created successfully`)
+      )
       .catch(err => {
         console.log(err);
-        notifyError('Please write the correct data');
+        notifyError(`Please write the correct email ${data.email}`);
       });
   };
 
   return (
     <Container>
-      {isLogedIn && <Navigate to="/contacts" replace />}
       <FormStyle onSubmit={handleSubmit(onSubmit)}>
         <label>
           <span>Name</span>

@@ -8,10 +8,10 @@ const initialState = {
   error: null,
   isLoggedIn: false,
   isRefreshing: false,
-  isLoading: false,
 };
 
-const getActions = type => isAnyOf(signUp[type], login[type], logOut[type]);
+const getActions = type =>
+  isAnyOf(signUp[type], login[type], logOut[type], refreshUser[type]);
 
 const authSlice = createSlice({
   name: 'auth',
@@ -36,20 +36,16 @@ const authSlice = createSlice({
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.user = action.payload;
         state.isLoggedIn = true;
-        state.isRefreshing = false;
       })
       .addMatcher(getActions('pending'), state => {
-        state.isLoading = false;
         state.isRefreshing = true;
       })
-
       .addMatcher(getActions('rejected'), (state, action) => {
-        state.isLoading = false;
         state.isRefreshing = false;
         state.error = true;
       })
       .addMatcher(getActions('fulfilled'), state => {
-        state.isLoading = false;
+        state.isRefreshing = false;
         state.error = null;
       });
   },
